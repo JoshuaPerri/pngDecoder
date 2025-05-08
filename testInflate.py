@@ -2,7 +2,7 @@ from bitstring import BitStream
 from bitstring import BitArray
 import inflate
 
-with open("testfiles/test.txt.gz", "rb") as file:
+with open("testfiles/test4.txt.gz", "rb") as file:
   data = file.read()
 
   bits = BitStream(data)

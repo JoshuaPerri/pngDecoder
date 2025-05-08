@@ -237,7 +237,7 @@ def inflateBlock(bs: BitStream):
     while True:
       literal: BitArray = bitReader.getNextLiteral(lTree)
       if (literal < 256):
-        print(literal)
+        # print(literal)
         inflatedBlock.append(chr(literal))
 
         j += 1
@@ -250,7 +250,7 @@ def inflateBlock(bs: BitStream):
         if (numEbits > 0):
           ebits = bitReader.getBits(numEbits).uint
 
-        print(literal, ebits, end="   ")
+        # print(literal, ebits, end="   ")
         length = LTABLE[literal]["length"] + ebits
 
         distCode = bitReader.getNextLiteral(dTree)
@@ -263,8 +263,14 @@ def inflateBlock(bs: BitStream):
         dist = DTABLE[distCode]["dist"] + ebits 
 
         # print("<" + str(length) + "," + str(dist) + ">", end="")
-        print(distCode, ebits)
-        inflatedBlock += inflatedBlock[-1 * dist: -1 * dist + length]
+        # print(distCode, ebits)
+        # inflatedBlock += inflatedBlock[-1 * dist: -1 * dist + length]
+        end = len(inflatedBlock)
+        if (end - dist + length <= end):
+          inflatedBlock += inflatedBlock[end - dist: end - dist + length]
+        else:
+          for i in range(length):
+            inflatedBlock.append(inflatedBlock[end - dist + i])
         # inflatedBlock.append("<" + str(length) + "," + str(dist) + ">")
         j += length
         
